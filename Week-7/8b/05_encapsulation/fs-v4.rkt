@@ -53,27 +53,26 @@
 ;
 
 ;; Element -> Integer
-;; ListOfElement -> Integer
 ;; produce the sum of all the data in element (and its subs)
-(check-expect (sum-data--element F1) 1)
-(check-expect (sum-data--loe empty) 0)
-(check-expect (sum-data--element D5) 3)
-(check-expect (sum-data--element D4) (+ 1 2))
-(check-expect (sum-data--element D6) (+ 1 2 3))
+(check-expect (sum-data F1) 1)
+(check-expect (sum-data D5) 3)
+(check-expect (sum-data D4) (+ 1 2))
+(check-expect (sum-data D6) (+ 1 2 3))
 
-;(define (sum-data--element e) 0)  ;stubs
-;(define (sum-data--loe loe) 0)
+(define (sum-data e)
+  (local 
+    [(define (sum-data--element e)
+       (if (zero? (elt-data e))
+           (sum-data--loe (elt-subs e))
+           (elt-data e)))
 
-(define (sum-data--element e)
-  (if (zero? (elt-data e))
-      (sum-data--loe (elt-subs e))
-      (elt-data e)))
-
-(define (sum-data--loe loe)
-  (cond [(empty? loe) 0]
-        [else
-         (+ (sum-data--element (first loe))
-            (sum-data--loe (rest loe)))]))
+     (define (sum-data--loe loe)
+       (cond [(empty? loe) 0]
+             [else
+              (+ (sum-data--element (first loe))
+                 (sum-data--loe (rest loe)))]))]
+    
+    (sum-data--element e)))
 
 ;
 ; PROBLEM
@@ -83,28 +82,26 @@
 ;
 
 ;; Element       -> ListOfString
-;; ListOfElement -> ListOfString
 ;; produce list of the names of all the elements in the tree
-(check-expect (all-names--loe empty) empty)
-(check-expect (all-names--element F1) (list "F1"))
-(check-expect (all-names--element D5) (list "D5" "F3"))
-(check-expect (all-names--element D4) (list "D4" "F1" "F2"))
-(check-expect (all-names--loe (list D4 D5)) (append (list "D4" "F1" "F2") (list "D5" "F3")))
-(check-expect (all-names--element D6) (list "D6" "D4" "F1" "F2" "D5" "F3"))
-(check-expect (all-names--element D6) (cons "D6"  (append (list "D4" "F1" "F2") (list "D5" "F3"))))
+(check-expect (all-names F1) (list "F1"))
+(check-expect (all-names D5) (list "D5" "F3"))
+(check-expect (all-names D4) (list "D4" "F1" "F2"))
+(check-expect (all-names D6) (list "D6" "D4" "F1" "F2" "D5" "F3"))
+(check-expect (all-names D6) (cons "D6"  (append (list "D4" "F1" "F2") (list "D5" "F3"))))
 
-;(define (all-names--element e) empty) ;stubs
-;(define (all-names--loe loe)   empty)
 
-(define (all-names--element e)
-  (cons (elt-name e)
-        (all-names--loe (elt-subs e))))
+(define (all-names e)
+  (local
+    [(define (all-names--element e)
+       (cons (elt-name e)
+             (all-names--loe (elt-subs e))))
 
-(define (all-names--loe loe)
-  (cond [(empty? loe) empty]
-        [else
-         (append (all-names--element (first loe))
-                 (all-names--loe (rest loe)))]))
+     (define (all-names--loe loe)
+       (cond [(empty? loe) empty]
+             [else
+              (append (all-names--element (first loe))
+                      (all-names--loe (rest loe)))]))]
+    (all-names--element e)))
 
 ;
 ; PROBLEM
@@ -127,8 +124,6 @@
 (check-expect (find "F1" D6) 1)
 (check-expect (find "F3" D6) 3)
 
-;(define (find--element n e) false) ;stubs
-;(define (find--loe n loe)   false)
 
 (define (find n e)
   (local [(define (find--element n e)
@@ -142,6 +137,7 @@
                    (if (not (false? (find--element n (first loe))))
                        (find--element n (first loe))
                        (find--loe n (rest loe)))]))]
+    
     (find--element n e)))
 
 ;
