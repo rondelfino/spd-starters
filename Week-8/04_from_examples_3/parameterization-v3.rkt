@@ -1,6 +1,6 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-intermediate-reader.ss" "lang")((modname parameterization-v3) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ())))
+#reader(lib "htdp-intermediate-reader.ss" "lang")((modname parameterization-v3) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 
 
 ;; ListOfString -> Boolean
@@ -62,12 +62,13 @@
 
 (define (square-roots lon) (map2 sqrt lon))
 
-
+;;(X -> Y) (listof X) -> (listof Y)
 ;; given fn and (list n0 n1 ...) produce (list (fn n0) (fn n1) ...)
 (check-expect (map2 sqr empty) empty) 
 (check-expect (map2 sqr (list 2 4)) (list 4 16))
 (check-expect (map2 sqrt (list 16 9)) (list 4 3))
-(check-expect (map2 abs (list 2 -3 4)) (list 2 3 4)) 
+(check-expect (map2 abs (list 2 -3 4)) (list 2 3 4))
+(check-expect (map2 string-length (list "a" "abcd" "abcdefg")) (list 1 4 7))
             
                
 (define (map2 fn lon)
@@ -98,7 +99,7 @@
 
 (define (negative-only lon) (filter2 negative? lon))
 
-
+;; (X -> Boolean) (listof X) -> (listof X)
 (check-expect (filter2 positive? empty) empty)
 (check-expect (filter2 positive? (list 1 -2 3 -4)) (list 1 3))
 (check-expect (filter2 negative? (list 1 -2 3 -4)) (list -2 -4))

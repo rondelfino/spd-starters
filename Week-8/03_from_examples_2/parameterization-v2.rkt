@@ -1,6 +1,6 @@
 ;; The first three lines of this file were inserted by DrRacket. They record metadata
 ;; about the language level of this file in a form that our tools can easily process.
-#reader(lib "htdp-intermediate-reader.ss" "lang")((modname parameterization-v2) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f ())))
+#reader(lib "htdp-intermediate-reader.ss" "lang")((modname parameterization-v2) (read-case-sensitive #t) (teachpacks ()) (htdp-settings #(#t constructor repeating-decimal #f #t none #f () #f)))
 
 
 ;; ListOfString -> Boolean
@@ -83,6 +83,12 @@
 
 (define (negative-only lon) (filter2 negative? lon))
 
+
+;; given a list, produce a list of only the elements that satisify the given predicate
+
+(check-expect (filter2 positive? empty) empty)
+(check-expect (filter2 positive? (list 1 -2 3 -4)) (list 1 3))
+(check-expect (filter2 negative? (list 1 -2 3 -4)) (list -2 -4))
 
 (define (filter2 pred lon)
   (cond [(empty? lon) empty]
