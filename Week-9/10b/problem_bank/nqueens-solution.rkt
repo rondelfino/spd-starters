@@ -11,7 +11,6 @@
 
 ;; Data definitions:
 
-(@HtDD Position)
 ;; Position is Natural
 ;; interp. positions on the board
 ;;         if    N is the number of queens
@@ -38,8 +37,6 @@
 ;; trampoline starts the actual search out by calling fn-for-bd with an empty
 ;; board.
 
-(@HtDF nqueens)
-(@signature Natural -> Board or false)
 ;; produce first found solution for n queens of size N; or false if none exists
 (check-expect (nqueens 1) (list 0))
 (check-expect (nqueens 2) false)
@@ -50,7 +47,6 @@
 (check-expect (nqueens 7) (list 47 38 29 27 18 9 0))
 (check-expect (nqueens 8) (list 59 49 46 34 29 23 12 0))
 
-(@template encapsulated backtracking genrec arb-tree)
 
 
 (define (nqueens N)          
